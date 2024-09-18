@@ -28,7 +28,7 @@ public class Wizard : Chara //se crea la clase Wizard que implementa la interfaz
         get { return health; }
         set { health = value; }
     }
-    public void AddItem(Item item) //metodo añadir item
+    public void AddItem(IItem item) //metodo añadir item
     {
         if (item != null)   //si el item existe
         {
@@ -39,7 +39,7 @@ public class Wizard : Chara //se crea la clase Wizard que implementa la interfaz
             Console.WriteLine("Ese item no existe"); //si el item no existe, se imprime un mensaje
         }
     }
-    public void RemoveItem(Item item) //metodo quitar item
+    public void RemoveItem(IItem item) //metodo quitar item
     {
         if (item != null) //si el item existe
         {
@@ -53,7 +53,7 @@ public class Wizard : Chara //se crea la clase Wizard que implementa la interfaz
     public int TotalDamage() //metodo para calcular el daño total
     {
         int totalatk = 0; //se inicializa la variable totalatk en 0
-        foreach (Item item in this.items) //se recorre el arraylist de items
+        foreach (IItem item in this.items) //se recorre el arraylist de items
         {
             totalatk += item.AttackValue; //se suma el valor de ataque de cada item
         }
@@ -62,7 +62,7 @@ public class Wizard : Chara //se crea la clase Wizard que implementa la interfaz
     public int TotalDefense() //metodo para calcular la defensa total
     {
         int totaldef = 0; //se inicializa la variable totaldef en 0
-        foreach (Item item in this.items) //se recorre el arraylist de items
+        foreach (IItem item in this.items) //se recorre el arraylist de items
         {
             totaldef += item.DefenseValue; //se suma el valor de defensa de cada item
         } 
@@ -105,7 +105,7 @@ public class Wizard : Chara //se crea la clase Wizard que implementa la interfaz
     public string GetInfo() //metodo para obtener informacion
     {
         string info = $"Nombre: {this.name}, Vida: {this.health}\nItems:\n"; //se inicializa la variable info con el nombre y la vida
-        foreach (Item item in this.items) //se recorre el arraylist de items
+        foreach (IItem item in this.items) //se recorre el arraylist de items
         {
             info += $"- {item.Name} (Ataque: {item.AttackValue}, Defensa: {item.DefenseValue})\n"; //se agrega el nombre, ataque y defensa de cada item
         }

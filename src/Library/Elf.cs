@@ -27,11 +27,14 @@ public class Elf : Chara
         set { health = value;}
     }
     
-    public void AddItem(Item item)        //metodo añadir item
+    public void AddItem(IItem item)        //metodo añadir item
     {
         if (item != null)
         {
-            this.items.Add(item);
+            if (item = MagicItem)
+            {
+                this.items.Add(item);
+            }
         }
         else
         {
@@ -39,7 +42,7 @@ public class Elf : Chara
         }
     }
 
-    public void RemoveItem(Item item)             //metodo quitar item
+    public void RemoveItem(IItem item)             //metodo quitar item
     {
         if (item != null)
         {
@@ -51,9 +54,9 @@ public class Elf : Chara
         }
     }
 
-    public Item GetItemByName(string nombre)        //metodo buscar item por nombre
+    public IItem GetItemByName(string nombre)        //metodo buscar item por nombre
     {
-        foreach (Item item in this.items)
+        foreach (IItem item in this.items)
         {
             if (item.Name == nombre)
             {
@@ -67,7 +70,7 @@ public class Elf : Chara
     public int TotalDamage()                //Metodo Daño total
     {
         int totalatk = 0;       //inicia una variabe
-        foreach (Item item in this.items)
+        foreach (IItem item in this.items)
         {
             totalatk += item.AttackValue;
         }                               //suma al ataque total todos los valores de ataque de los items
@@ -77,7 +80,7 @@ public class Elf : Chara
     public int TotalDefense()               //Metodo Daño total
     {
         int totaldef = 0;       //inicia una variable
-        foreach (Item item in this.items)
+        foreach (IItem item in this.items)
         {
             totaldef += item.DefenseValue;
         }                          
@@ -106,7 +109,7 @@ public class Elf : Chara
     public string GetInfo()
     {
         string info = $"Nombre: {this.name}, Vida: {this.health}\nItems:\n";
-        foreach (Item item in this.items)
+        foreach (IItem item in this.items)
         {
             info += $"- {item.Name} (Ataque: {item.AttackValue}, Defensa: {item.DefenseValue})\n";
         }

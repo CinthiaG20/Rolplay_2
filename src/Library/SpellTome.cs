@@ -1,7 +1,7 @@
 using System.Collections;
 namespace Library;
 
-public class SpellTome : Item, IEnumerable<Spell> //implementa la clase spelltome de tipo item y la interfaz IEnumerable de tipo spell
+public class SpellTome : IItem, IEnumerable<Spell> //implementa la clase spelltome de tipo item y la interfaz IEnumerable de tipo spell
 {
     private List<Spell> spells = new List<Spell>(); //se crea una lista de hechizos
 
