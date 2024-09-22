@@ -27,11 +27,11 @@ public class Elf : Chara
         set { health = value;}
     }
     
-    public void AddItem(IItem item)        //metodo añadir item
+    public void AddItem(IItem item)
     {
         if (item != null)
         {
-            if (item = MagicItem)
+            if (item.Type != ItemType.Magic)
             {
                 this.items.Add(item);
             }
@@ -42,11 +42,14 @@ public class Elf : Chara
         }
     }
 
-    public void RemoveItem(IItem item)             //metodo quitar item
+    public void RemoveItem(IItem item)
     {
         if (item != null)
         {
-            this.items.Remove(item);
+            if (item.Type == ItemType.Magic)
+            {
+                this.items.Remove(item);
+            }
         }
         else
         {

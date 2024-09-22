@@ -1,62 +1,68 @@
 using System.Collections;
+using System.Collections.Generic;
+
 namespace Library;
 
-public class SpellTome : IItem, IEnumerable<Spell> //implementa la clase spelltome de tipo item y la interfaz IEnumerable de tipo spell
+public class SpellTome : IItem, IEnumerable<Spell>
 {
-    private List<Spell> spells = new List<Spell>(); //se crea una lista de hechizos
+    private List<Spell> spells = new List<Spell>();
 
-    public SpellTome(string name, int attackValue, int defenseValue) : //constructor de la clase
-        base(name, attackValue, defenseValue) //se llama al constructor de la clase base
+    public string Name { get; set; }
+    public ItemType Type { get; set; }
+    public int AttackValue { get; set; } = 0; //de esta forma se evita al crear un libro agrtegarle un valor de ataque
+    public int DefenseValue { get; set; } = 0; //de esta forma se evita al crear un libro agrtegarle un valor de defensa
+    public SpellTome(string name, ItemType type)
     {
+        this.Name = name;
+        this.Type = type;
     }
 
-    public void AddSpell(Spell spell) //metodo para añadir hechizo
+    public void AddSpell(Spell spell)
     {
-        if (spell != null) //si el hechizo existe
+        if (spell != null)
         {
-            this.spells.Add(spell); //se añade el hechizo a la lista
+            this.spells.Add(spell);
         }
         else
         {
-            Console.WriteLine("Ese hechizo no existe"); //si el hechizo no existe, se imprime un mensaje
+            Console.WriteLine("Ese hechizo no existe");
         }
     }
- 
 
-    public void RemoveSpell(Spell spell) //metodo para quitar hechizo
+    public void RemoveSpell(Spell spell)
     {
-        if (spell != null) //si el hechizo existe
+        if (spell != null)
         {
-            this.spells.Remove(spell); //se remueve el hechizo
+            this.spells.Remove(spell);
         }
         else
         {
-            Console.WriteLine("Ese hechizo no existe"); //si el hechizo no existe, se imprime un mensaje
+            Console.WriteLine("Ese hechizo no existe");
         }
     }
 
-    public bool ContainsSpell(Spell spell) //metodo para saber si contiene un hechizo
+    public bool ContainsSpell(Spell spell)
     {
-        return this.spells.Contains(spell); //retorna si la lista contiene el hechizo
+        return this.spells.Contains(spell);
     }
 
-    public string GetSpellsInfo() //metodo para obtener la informacion de los hechizos
+    public string GetSpellsInfo()
     {
-        string info = "Hechizos:\n"; //se inicializa la variable info
-        foreach (Spell spell in this.spells) //se recorre la lista de hechizos
+        string info = "Hechizos:\n";
+        foreach (Spell spell in this.spells)
         {
-            info += $"- {spell.Name} (Ataque: {spell.Damage})\n"; //se añade la informacion de cada hechizo
+            info += $"- {spell.Name}\n";
         }
-        return info; //se retorna la informacion
+        return info;
     }
 
-    public IEnumerator<Spell> GetEnumerator() 
+    public IEnumerator<Spell> GetEnumerator()
     {
-        return this.spells.GetEnumerator(); 
+        return this.spells.GetEnumerator();
     }
 
-    IEnumerator IEnumerable.GetEnumerator() 
+    IEnumerator IEnumerable.GetEnumerator()
     {
-        return this.GetEnumerator(); 
-    } 
+        return this.GetEnumerator();
+    }
 }

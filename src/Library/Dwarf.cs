@@ -5,46 +5,35 @@ namespace Library;
 
 public class Dwarf : Chara
 {
-    private string name;            //atributo nombre
+    private string name;
     private int health;
     private int maxhealth;
     private ArrayList items = new ArrayList();
-    
-    public Dwarf(string name, int maxhealth)          //metodo constructor
+
+    public Dwarf(string name, int maxhealth)
     {
-        this.Name = name;                   //toma el string para el nombre
-        this.maxhealth = maxhealth;         //toma el entero dado para que sea la vida maxima
-        this.Health = maxhealth;            //le da el mismo valor a la vida actual
-    }
-    public string Name              //metodo para poner o saber nombre
-    {
-        get { return name;}
-        set { name = value;}
+        this.Name = name;
+        this.maxhealth = maxhealth;
+        this.Health = maxhealth;
     }
 
-    public int Health               //metodo vida
+    public string Name
     {
-        get { return health;}
-        set { health = value;}
+        get { return name; }
+        set { name = value; }
     }
-    
-    public void AddItem(IItem item)        //metodo añadir item
+
+    public int Health
+    {
+        get { return health; }
+        set { health = value; }
+    }
+
+    public void AddItem(IItem item)
     {
         if (item != null)
         {
-            this.items.Add(item);
-        }
-        else
-        {
-            Console.WriteLine("Ese item no existe");
-        }
-    }
-
-    public void RemoveItem(IItem item)             //metodo quitar item
-    {
-        if (item != null)
-        {
-            if (item = MagicItem)
+            if (item.Type != ItemType.Magic)
             {
                 this.items.Add(item);
             }
@@ -55,7 +44,22 @@ public class Dwarf : Chara
         }
     }
 
-    public IItem GetItemByName(string nombre)        //metodo buscar item por nombre
+    public void RemoveItem(IItem item)
+    {
+        if (item != null)
+        {
+            if (item.Type == ItemType.Magic)
+            {
+                this.items.Remove(item);
+            }
+        }
+        else
+        {
+            Console.WriteLine("Ese item no existe");
+        }
+    }
+
+    public IItem GetItemByName(string nombre)
     {
         foreach (IItem item in this.items)
         {
@@ -67,47 +71,47 @@ public class Dwarf : Chara
 
         return null;
     }
-    
-    public int TotalDamage()                //Metodo Daño total
+
+    public int TotalDamage()
     {
-        int totalatk = 0;       //inicia una variabe
+        int totalatk = 0;
         foreach (IItem item in this.items)
         {
             totalatk += item.AttackValue;
-        }                               //suma al ataque total todos los valores de ataque de los items
-        return totalatk;        //devuelve el total
+        }
+        return totalatk;
     }
-    
-    public int TotalDefense()               //Metodo Daño total
+
+    public int TotalDefense()
     {
-        int totaldef = 0;       //inicia una variable
+        int totaldef = 0;
         foreach (IItem item in this.items)
         {
             totaldef += item.DefenseValue;
-        }                          
-        return totaldef;        //devuelve la defensa total
-    }
-    
-    public void Attack(Chara target) //metodo para atacar
-    {
-        int damage = this.TotalDamage(); //se calcula el daño total
-        Console.WriteLine($"{this.Name} ataca a {target.Name} y causa {damage} de daño."); //se imprime un mensaje
-        target.ReceiveDamage(damage);   //se llama al metodo ReceiveDamage de la clase Chara
-       
+        }
+        return totaldef;
     }
 
-    public void ReceiveDamage(int damage) //metodo para recibir daño
+    public void Attack(Chara target)
     {
-        this.Health -= damage; //se resta el daño a la vida
-        if (this.Health < 0) this.Health = 0; //si la vida es menor a 0, se asigna 0
-        Console.WriteLine($"{this.name} recibe {damage} de daño. Vida restante: {this.Health}"); //se imprime un mensaje
+        int damage = this.TotalDamage();
+        Console.WriteLine($"{this.Name} ataca a {target.Name} y causa {damage} de daño.");
+        target.ReceiveDamage(damage);
     }
-    public void Heal() //metodo para curar
+
+    public void ReceiveDamage(int damage)
     {
-        this.health = this.maxhealth; //se asigna la vida maxima a la vida
-        Console.WriteLine($"{this.name} ha sido curado. Vida restaurada a: {this.health}"); //se imprime un mensaje
+        this.Health -= damage;
+        if (this.Health < 0) this.Health = 0;
+        Console.WriteLine($"{this.name} recibe {damage} de daño. Vida restante: {this.Health}");
     }
-    
+
+    public void Heal()
+    {
+        this.health = this.maxhealth;
+        Console.WriteLine($"{this.name} ha sido curado. Vida restaurada a: {this.health}");
+    }
+
     public string GetInfo()
     {
         string info = $"Nombre: {this.name}, Vida: {this.health}\nItems:\n";
