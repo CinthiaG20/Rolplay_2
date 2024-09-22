@@ -1,6 +1,6 @@
 namespace Library;
 
-public interface IAtackItem : IItem
+public interface IAttackItem : IItem
 {
-    int atackvalue { get; }
+    int AttackValue { get; }
 }

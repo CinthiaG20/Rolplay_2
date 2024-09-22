@@ -62,7 +62,7 @@ public class Wizard : Chara //se crea la clase Wizard que implementa la interfaz
     public int TotalDefense() //metodo para calcular la defensa total
     {
         int totaldef = 0; //se inicializa la variable totaldef en 0
-        foreach (IItem item in this.items) //se recorre el arraylist de items
+        foreach (IDefenseItem item in this.items) //se recorre el arraylist de items
         {
             totaldef += item.DefenseValue; //se suma el valor de defensa de cada item
         } 
@@ -105,9 +105,13 @@ public class Wizard : Chara //se crea la clase Wizard que implementa la interfaz
     public string GetInfo() //metodo para obtener informacion
     {
         string info = $"Nombre: {this.name}, Vida: {this.health}\nItems:\n"; //se inicializa la variable info con el nombre y la vida
-        foreach (IItem item in this.items) //se recorre el arraylist de items
+        foreach (IAttackItem item in this.items)
         {
-            info += $"- {item.Name} (Ataque: {item.AttackValue}, Defensa: {item.DefenseValue})\n"; //se agrega el nombre, ataque y defensa de cada item
+            info += $"- {item.Name} (Ataque: {item.AttackValue})\n";
+        }
+        foreach (IDefenseItem item in this.items)
+        {
+            info += $"- {item.Name} (Defensa: {item.DefenseValue})\n";
         }
         info += $"Total Ataque: {this.TotalDamage()}\n"; //se agrega el total de ataque
         info += $"Total Defensa: {this.TotalDefense()}\n"; //se agrega el total de defensa

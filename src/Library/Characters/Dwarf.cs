@@ -3,14 +3,14 @@ using System.Collections;
 
 namespace Library;
 
-public class Elf : Chara
+public class Dwarf : Chara
 {
     private string name;            //atributo nombre
     private int health;
     private int maxhealth;
     private ArrayList items = new ArrayList();
     
-    public Elf(string name, int maxhealth)          //metodo constructor
+    public Dwarf(string name, int maxhealth)          //metodo constructor
     {
         this.Name = name;                   //toma el string para el nombre
         this.maxhealth = maxhealth;         //toma el entero dado para que sea la vida maxima
@@ -21,6 +21,7 @@ public class Elf : Chara
         get { return name;}
         set { name = value;}
     }
+
     public int Health               //metodo vida
     {
         get { return health;}
@@ -31,10 +32,7 @@ public class Elf : Chara
     {
         if (item != null)
         {
-            if (item = MagicItem)
-            {
-                this.items.Add(item);
-            }
+            this.items.Add(item);
         }
         else
         {
@@ -46,7 +44,10 @@ public class Elf : Chara
     {
         if (item != null)
         {
-            this.items.Remove(item);
+            if (item is IMagicItem)
+            {
+                this.items.Add(item);
+            }
         }
         else
         {
@@ -70,7 +71,7 @@ public class Elf : Chara
     public int TotalDamage()                //Metodo Daño total
     {
         int totalatk = 0;       //inicia una variabe
-        foreach (IItem item in this.items)
+        foreach (IAttackItem item in this.items)
         {
             totalatk += item.AttackValue;
         }                               //suma al ataque total todos los valores de ataque de los items
@@ -80,12 +81,13 @@ public class Elf : Chara
     public int TotalDefense()               //Metodo Daño total
     {
         int totaldef = 0;       //inicia una variable
-        foreach (IItem item in this.items)
+        foreach (IDefenseItem item in this.items)
         {
             totaldef += item.DefenseValue;
         }                          
         return totaldef;        //devuelve la defensa total
     }
+    
     public void Attack(Chara target) //metodo para atacar
     {
         int damage = this.TotalDamage(); //se calcula el daño total
@@ -109,9 +111,13 @@ public class Elf : Chara
     public string GetInfo()
     {
         string info = $"Nombre: {this.name}, Vida: {this.health}\nItems:\n";
-        foreach (IItem item in this.items)
+        foreach (IAttackItem item in this.items)
         {
-            info += $"- {item.Name} (Ataque: {item.AttackValue}, Defensa: {item.DefenseValue})\n";
+            info += $"- {item.Name} (Ataque: {item.AttackValue})\n";
+        }
+        foreach (IDefenseItem item in this.items)
+        {
+            info += $"- {item.Name} (Defensa: {item.DefenseValue})\n";
         }
         info += $"Total Ataque: {this.TotalDamage()}\n";
         info += $"Total Defensa: {this.TotalDefense()}\n";
