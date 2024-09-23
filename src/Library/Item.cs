@@ -25,7 +25,8 @@ public class Item : IItem
 
         if (type == ItemType.Magic)
         {
-            
+            AttackValue = valor;
+            DefenseValue = valor;
         }
         
         
