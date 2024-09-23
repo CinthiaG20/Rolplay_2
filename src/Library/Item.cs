@@ -1,32 +1,33 @@
 ﻿namespace Library;
 
-public class Item
+public class Item : IItem
 {
-    private string name;
-    public string Name
-    {
-        get { return name; }
-        set { name = value; }
-    }
+    public string Name { get; set; }
+    public int AttackValue { get; set; }
+    public int DefenseValue { get; set; }
+    public ItemType Type { get; set; }
 
-    private int attackValue;
-    public int AttackValue
-    {
-        get { return attackValue; }
-        set { attackValue = value; }
-    }
-
-    private int defenseValue;
-    public int DefenseValue
-    {
-        get { return defenseValue; }
-        set { defenseValue = value; }
-    }
-
-    public Item(string name, int attackValue, int defenseValue)
+    public Item(string name,int valor, ItemType type)
     {
         this.Name = name;
-        this.AttackValue = attackValue;
-        this.DefenseValue = defenseValue;
+        this.Type = type;
+        if (type == ItemType.Attack)
+        {
+            AttackValue = valor;
+            DefenseValue = 0;
+        }
+
+        if (type == ItemType.Defense)
+        {
+            AttackValue = 0;
+            DefenseValue = valor;
+        }
+
+        if (type == ItemType.Magic)
+        {
+            
+        }
+        
+        
     }
 }
