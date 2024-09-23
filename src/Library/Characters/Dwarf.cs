@@ -68,25 +68,31 @@ public class Dwarf : Chara
         return null;
     }
     
-    public int TotalDamage()                //Metodo Daño total
+    public int TotalDamage() //metodo para calcular el daño total
     {
-        int totalatk = 0;       //inicia una variabe
-        foreach (IAttackItem item in this.items)
+        int totalatk = 0; //se inicializa la variable totalatk en 0
+        foreach (IItem item in this.items)//se recorre el arraylist de items
         {
-            totalatk += item.AttackValue;
-        }                               //suma al ataque total todos los valores de ataque de los items
-        return totalatk;        //devuelve el total
+            if (item is IAttackItem attackItem)
+            {
+                totalatk += attackItem.AttackValue; //se suma el valor de ataque de cada item
+            }
+        }
+        return totalatk; //se retorna el valor total de ataque
     }
-    
-    public int TotalDefense()               //Metodo Daño total
+    public int TotalDefense() //metodo para calcular la defensa total
     {
-        int totaldef = 0;       //inicia una variable
-        foreach (IDefenseItem item in this.items)
+        int totaldef = 0; //se inicializa la variable totaldef en 0
+        foreach (IItem item in this.items) //se recorre el arraylist de items
         {
-            totaldef += item.DefenseValue;
-        }                          
-        return totaldef;        //devuelve la defensa total
+            if (item is IDefenseItem defenseItem)
+            {
+                totaldef += defenseItem.DefenseValue; //se suma el valor de defensa de cada item
+            }
+        } 
+        return totaldef; //se retorna el valor total de defensa
     }
+
     
     public void Attack(Chara target) //metodo para atacar
     {
@@ -95,10 +101,11 @@ public class Dwarf : Chara
         target.ReceiveDamage(damage);   //se llama al metodo ReceiveDamage de la clase Chara
        
     }
-
     public void ReceiveDamage(int damage) //metodo para recibir daño
     {
-        this.Health -= damage; //se resta el daño a la vida
+        int defensa = this.TotalDefense();
+        int dañorecibido = damage - defensa;
+        this.Health -= dañorecibido; //se resta el daño a la vida
         if (this.Health < 0) this.Health = 0; //si la vida es menor a 0, se asigna 0
         Console.WriteLine($"{this.name} recibe {damage} de daño. Vida restante: {this.Health}"); //se imprime un mensaje
     }

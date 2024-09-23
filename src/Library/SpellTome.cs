@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Library;
 
-public class SpellTome : IItem, IEnumerable<Spell>
+public class SpellTome : IMagicItem, IEnumerable<Spell>
 {
     private List<Spell> spells = new List<Spell>();
 
@@ -25,6 +25,17 @@ public class SpellTome : IItem, IEnumerable<Spell>
         {
             Console.WriteLine("Ese hechizo no existe");
         }
+    }
+
+    public string Spells()
+    {
+        string hechizos = "Hechizos\n";
+        foreach (Spell spell in spells)
+        {
+            hechizos += $"- {spell.Name} (Ataque: {spell.Damage})\n";
+        }
+
+        return hechizos;
     }
 
     public void RemoveSpell(Spell spell)

@@ -16,6 +16,17 @@ public class Baculo : IMagicItem
             Console.WriteLine("Ese hechizo no existe");
         }
     }
+    
+    public string Spells()
+    {
+        string hechizos = "Hechizos\n";
+        foreach (Spell spell in spells)
+        {
+            hechizos += $"- {spell.Name} (Ataque: {spell.Damage})\n";
+        }
+
+        return hechizos;
+    }
 
     public Baculo(string nombre)
     {

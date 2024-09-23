@@ -1,4 +1,6 @@
 using Library;
+using Library.Items;
+
 namespace LibraryTests;
 
 public class DwarfTest
@@ -15,18 +17,17 @@ public class DwarfTest
     [Test]
     public void TestItem()     // Item
     {
-        Item martillo = new Item("Martillo", 15, 10);
+        IAttackItem martillo = new Martillo("Martillo", 15);
 
         Assert.That(martillo.Name, Is.EqualTo("Martillo"));
         Assert.That(martillo.AttackValue, Is.EqualTo(15));
-        Assert.That(martillo.DefenseValue, Is.EqualTo(10));
     }
     
     [Test]
     public void Test3()     // GetInfo | AddItem | RemoveItem
     {
         Dwarf enano = new Dwarf("Enano", 100);
-        Item martillo = new Item("Martillo", 15, 10);
+        IAttackItem martillo = new Martillo("Martillo", 15);
         enano.AddItem(martillo);
         
         string result = enano.GetInfo();
@@ -57,11 +58,11 @@ public class DwarfTest
     public void TestDamage()     // TotalDamage | TotalDefense
     {
         Dwarf enano = new Dwarf("Enano", 100);
-        Item martillo = new Item("Martillo", 10, 3);
-        Item espada = new Item("Espada", 5, 5);
-        Item hacha = new Item("Hacha", 0, 10);
+        IAttackItem martillo = new Martillo("Martillo", 10);
+        IAttackItem espada = new Espada("Espada", 10);
+        IAttackItem hacha = new Hacha("Hacha", 10);
         
-        Assert.That(enano.TotalDamage(), Is.EqualTo(0));
+        Assert.That(enano.TotalDamage(), Is.EqualTo(30));
         Assert.That(enano.TotalDefense(), Is.EqualTo(0));
     }
 }

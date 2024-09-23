@@ -1,4 +1,5 @@
 using Library;
+using Library.Items;
 
 namespace LibraryTests;
 
@@ -7,8 +8,9 @@ public class WizardsTest
     [Test]
     public void Test1()     // Wizard
     {
-        SpellTome spellTome = new SpellTome("Tome", 0, 0);
-        Wizard mago = new Wizard("Gandalf", 100, spellTome);
+        IMagicItem spellTome = new SpellTome("Tome");
+        Wizard mago = new Wizard("Gandalf", 100);
+        mago.AddItem(spellTome);
         
         Assert.That(mago.Name, Is.EqualTo("Gandalf"));
         Assert.That(mago.Health, Is.EqualTo(100));
@@ -27,9 +29,10 @@ public class WizardsTest
     [Test]
     public void Test3()     // GetInfo | AddItem | RemoveItem
     {
-        SpellTome spellTome = new SpellTome("Tome", 0, 0);
-        Wizard mago = new Wizard("Gandalf", 100, spellTome);
-        Item baston = new Item("Bastón Mágico", 10, 3);
+        SpellTome spellTome = new SpellTome("Tome");
+        Wizard mago = new Wizard("Gandalf", 100);
+        mago.AddItem(spellTome);
+        IItem baston = new Martillo("Bastón Mágico", 10);
         mago.AddItem(baston);
         
         string result = mago.GetInfo();
@@ -46,8 +49,9 @@ public class WizardsTest
     [Test]
     public void Test4()     // Heal
     {
-        SpellTome spellTome = new SpellTome("Tome", 0, 0);
-        Wizard mago = new Wizard("Gandalf", 100, spellTome);
+        SpellTome spellTome = new SpellTome("Tome");
+        Wizard mago = new Wizard("Gandalf", 100);
+        mago.AddItem(spellTome);
         mago.Health = 55;
         
         Assert.That(mago.Health, Is.EqualTo(55));
@@ -60,11 +64,12 @@ public class WizardsTest
     [Test]
     public void Test5()     // TotalDamage | TotalDefense
     {
-        SpellTome spellTome = new SpellTome("Tome", 0, 0);
-        Wizard mago1 = new Wizard("Sauron", 100, spellTome);
-        Item bastonigneo = new Item("Bastón de Fuego", 10, 3);
-        Item amuleto = new Item("Amuleto mistico", 5, 5);
-        Item capain = new Item("Capa de Sigilo", 0, 10);
+        SpellTome spellTome = new SpellTome("Tome");
+        Wizard mago1 = new Wizard("Sauron", 100);
+        mago1.AddItem(spellTome);
+        IAttackItem bastonigneo = new Martillo("Bastón de Fuego", 10);
+        IItem amuleto = new Amuleto("Amuleto mistico", 5, 5);
+        IDefenseItem capain = new Capa("Capa de Sigilo", 10);
         
         mago1.AddItem(bastonigneo);
         mago1.AddItem(amuleto);
@@ -78,9 +83,10 @@ public class WizardsTest
     public void Test6()     // UseSpell
     {
         Spell bolaDeFuego = new Spell("Bola de Fuego", 20);
-        SpellTome spellTome = new SpellTome("Tome", 0, 0);
+        IMagicItem spellTome = new SpellTome("Tome");
         spellTome.AddSpell(bolaDeFuego);
-        Wizard mago = new Wizard("Gandalf", 100, spellTome);
+        Wizard mago = new Wizard("Gandalf", 100);
+        mago.AddItem(spellTome);
         Dwarf enano = new Dwarf("Gimli", 100);
 
         mago.UseSpell(bolaDeFuego, enano);
