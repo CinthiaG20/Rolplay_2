@@ -27,11 +27,11 @@ public class Elf : Chara
         set { health = value;}
     }
     
-    public void AddItem(IItem item)
+    public void AddItem(IItem item) //metodo añadir item
     {
         if (item != null)
         {
-            if (item.Type != ItemType.Magic)
+            if (item.Type != ItemType.Magic && item.Type != ItemType.MagicAttack && item.Type != ItemType.magicDefense) //verifica si el item es de tipo ataque o defensa
             {
                 this.items.Add(item);
             }
@@ -42,18 +42,16 @@ public class Elf : Chara
         }
     }
 
-    public void RemoveItem(IItem item)
+    public void RemoveItem(IItem item) //metodo para remover item
     {
         if (item != null)
         {
-            if (item.Type == ItemType.Magic)
-            {
-                this.items.Remove(item);
-            }
+            this.items.Remove(item);
+            Console.WriteLine($"{item.Name} ha sido removido de {this.Name}.");
         }
         else
         {
-            Console.WriteLine("Ese item no existe");
+            Console.WriteLine("Ese item no existe.");
         }
     }
 
@@ -89,19 +87,55 @@ public class Elf : Chara
         }                          
         return totaldef;        //devuelve la defensa total
     }
-    public void Attack(Chara target) //metodo para atacar
+    public void Attack(Chara target, IItem item) //metodo para atacar con un item
     {
-        int damage = this.TotalDamage(); //se calcula el daño total
-        Console.WriteLine($"{this.Name} ataca a {target.Name} y causa {damage} de daño."); //se imprime un mensaje
-        target.ReceiveDamage(damage);   //se llama al metodo ReceiveDamage de la clase Chara
-       
+        if (this.items.Contains(item)) //verifica si el item está asignado al personaje
+        {
+            if (item.Type == ItemType.Attack ||  item.Type == ItemType.attackDefense) //verifica si el item es de tipo ataque, ataque mágico o ataque-defensa
+            {
+                int damage = item.AttackValue; //se usa el valor de ataque del item
+                Console.WriteLine($"{this.Name} ataca a {target.Name} con {item.Name} y causa {damage} de daño."); //se imprime un mensaje
+                target.ReceiveDamage(damage); //se llama al metodo ReceiveDamage de la clase Chara
+            }
+            else
+            {
+                Console.WriteLine($"{item.Name} no puede ser usado para atacar."); //si el item no es de tipo ataque, se imprime un mensaje
+            }
+        }
+        else
+        {
+            Console.WriteLine($"{this.Name} no tiene asignado el item {item.Name}."); //si el item no está asignado, se imprime un mensaje
+        }
     }
-
+    
+    public void ReceiveMagicDamage(int damage) //metodo para recibir daño de hechizo
+    {
+        this.Health -= damage;
+        if (this.Health < 0) this.Health = 0;
+        Console.WriteLine($"{this.name} recibe {damage} de daño. Vida restante: {this.Health}");
+    }
     public void ReceiveDamage(int damage) //metodo para recibir daño
     {
-        this.Health -= damage; //se resta el daño a la vida
-        if (this.Health < 0) this.Health = 0; //si la vida es menor a 0, se asigna 0
-        Console.WriteLine($"{this.name} recibe {damage} de daño. Vida restante: {this.Health}"); //se imprime un mensaje
+        int totalDefenseValue = 0;
+
+        // calcula el total de defensa
+        foreach (IItem item in this.items)
+        {
+            if (item.Type == ItemType.Defense || item.Type == ItemType.attackDefense || item.Type == ItemType.magicDefense)
+            {
+                totalDefenseValue += item.DefenseValue;
+            }
+        }
+
+        // Reduce el daño por el valor total de defensa
+        int reducedDamage = damage - totalDefenseValue;
+        if (reducedDamage < 0) reducedDamage = 0; // no permitir que el daño reducido sea negativo
+
+        // aplicar el daño reducido a la vida
+        this.Health -= reducedDamage;
+        if (this.Health < 0) this.Health = 0; // no permitir que la vida sea negativa
+
+        Console.WriteLine($"{this.Name} recibe {reducedDamage} de daño después de aplicar defensa. Vida restante: {this.Health}");
     }
     public void Heal() //metodo para curar
     {
@@ -109,7 +143,7 @@ public class Elf : Chara
         Console.WriteLine($"{this.name} ha sido curado. Vida restaurada a: {this.health}"); //se imprime un mensaje
     }
     
-    public string GetInfo()
+    public string GetInfo() //metodo para obtener información del personaje
     {
         string info = $"Nombre: {this.name}, Vida: {this.health}\nItems:\n";
         foreach (IItem item in this.items)

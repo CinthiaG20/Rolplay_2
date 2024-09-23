@@ -1,70 +1,115 @@
 ﻿using Library;
+using NUnit.Framework;
 
-namespace LibraryTests;
-
-public class ElfTests
+namespace LibraryTests
 {
-    [Test]
-    public void Test1()     // Elf
+    [TestFixture]
+    public class ElfTests
     {
-        Elf elfo = new Elf("Legolas", 100);
+        private Elf elf;
+        private IItem defenseItem;
+        private IItem attackItem;
+        private IItem attackDefenseItem;
+        private Elf target;
 
-        Assert.That(elfo.Name, Is.EqualTo("Legolas"));
-        Assert.That(elfo.Health, Is.EqualTo(100));
-    }
+        [SetUp]
+        public void Setup()
+        {
+            elf = new Elf("Legolas", 100);
+            defenseItem = new Item("Shield", 0, 20, ItemType.Defense);
+            attackItem = new Item("Bow", 30, 0, ItemType.Attack);
+            attackDefenseItem = new Item("Sword", 15, 10, ItemType.attackDefense);
+            target = new Elf("Thranduil", 100);
+        }
 
-    [Test]
-    public void Test2()     // Item
-    {
-        Item arco = new Item("Arco de yggdrasil", 12, 0);
+        [Test]
+        public void Test1() // Elf
+        {
+            Assert.That(elf.Name, Is.EqualTo("Legolas"));
+            Assert.That(elf.Health, Is.EqualTo(100));
+        }
 
-        Assert.That(arco.Name, Is.EqualTo("Arco de yggdrasil"));
-        Assert.That(arco.AttackValue, Is.EqualTo(12));
-        Assert.That(arco.DefenseValue, Is.EqualTo(0));
-    }
+        [Test]
+        public void Test2() // Item
+        {
+            Item bow = new Item("Bow", 10, 3, ItemType.Attack);
+            Assert.That(bow.Name, Is.EqualTo("Bow"));
+            Assert.That(bow.AttackValue, Is.EqualTo(10));
+            Assert.That(bow.DefenseValue, Is.EqualTo(0));
+        }
 
-    [Test]
-    public void Test3()     // GetInfo | AddItem | RemoveItem
-    {
-        Elf elfo = new Elf("Legolas", 100);
-        Item arco = new Item("Arco de yggdrasil", 12, 0);
-        elfo.AddItem(arco);
+        [Test]
+        public void Test3() // GetInfo | AddItem | RemoveItem
+        {
+            Item bow = new Item("Bow", 10, 3, ItemType.Attack);
+            elf.AddItem(bow);
 
-        string result = elfo.GetInfo();
-        string expected = "Nombre: Legolas, Vida: 100\nItems:\n- Arco de yggdrasil (Ataque: 12, Defensa: 0)\nTotal Ataque: 12\nTotal Defensa: 0\n";
-        Assert.That(result, Is.EqualTo(expected));
+            string result = elf.GetInfo();
+            string expected = "Nombre: Legolas, Vida: 100\nItems:\n- Bow (Ataque: 10, Defensa: 0)\nTotal Ataque: 10\nTotal Defensa: 0\n";
+            Assert.That(result, Is.EqualTo(expected));
 
-        elfo.RemoveItem(arco);
+            elf.RemoveItem(bow);
 
-        result = elfo.GetInfo();
-        expected = "Nombre: Legolas, Vida: 100\nItems:\nTotal Ataque: 0\nTotal Defensa: 0\n";
-        Assert.That(result, Is.EqualTo(expected));
-    }
+            result = elf.GetInfo();
+            expected = "Nombre: Legolas, Vida: 100\nItems:\nTotal Ataque: 0\nTotal Defensa: 0\n";
+            Assert.That(result, Is.EqualTo(expected));
+        }
 
-    [Test]
-    public void Test4()     // Heal
-    {
-        Elf elfo = new Elf("Legolas", 100);
-        elfo.Health = 55;
+        [Test]
+        public void Test4() // Heal
+        {
+            elf.Health = 55;
+            Assert.That(elf.Health, Is.EqualTo(55));
 
-        Assert.That(elfo.Health, Is.EqualTo(55));
+            elf.Heal();
+            Assert.That(elf.Health, Is.EqualTo(100));
+        }
 
-        elfo.Heal();
+        [Test]
+        public void Test5() // TotalDamage | TotalDefense
+        {
+            Item bow = new Item("Bow", 10, 3, ItemType.Attack);
+            Item amulet = new Item("Amulet", 5, 5, ItemType.attackDefense);
+            Item cloak = new Item("Cloak", 0, 10, ItemType.Defense);
 
-        Assert.That(elfo.Health, Is.EqualTo(100));
-    }
+            elf.AddItem(bow);
+            elf.AddItem(amulet);
+            elf.AddItem(cloak);
 
-    [Test]
-    public void Test5()     // TotalDamage | TotalDefense
-    {
-        Elf elfo = new Elf("Legolas", 100);
-        Item arco = new Item("Arco de yggdrasil", 12, 0);
-        Item tunicaElfica = new Item("Túnica Élfica", 0, 8);
+            Assert.That(elf.TotalDamage(), Is.EqualTo(15));
+            Assert.That(elf.TotalDefense(), Is.EqualTo(18));
+        }
 
-        elfo.AddItem(arco);
-        elfo.AddItem(tunicaElfica);
+        [Test]
+        public void Test6() // ReceiveDamage
+        {
+            elf.AddItem(defenseItem);
+            elf.ReceiveDamage(50);
+            Assert.That(elf.Health, Is.EqualTo(70));
+        }
 
-        Assert.That(elfo.TotalDamage(), Is.EqualTo(12));
-        Assert.That(elfo.TotalDefense(), Is.EqualTo(8));
+        [Test]
+        public void Test7() // ReceiveDamage_ShouldNotReduceHealthBelowZero
+        {
+            elf.AddItem(defenseItem);
+            elf.ReceiveDamage(150);
+            Assert.That(elf.Health, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void Test8() // Attack
+        {
+            elf.AddItem(attackItem);
+            elf.Attack(target, attackItem);
+            Assert.That(target.Health, Is.EqualTo(70));
+        }
+
+        [Test]
+        public void Test9() // attack con un item de defensa
+        {
+            elf.AddItem(defenseItem);
+            elf.Attack(target, defenseItem);
+            Assert.That(target.Health, Is.EqualTo(100));
+        }
     }
 }
