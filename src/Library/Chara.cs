@@ -1,6 +1,6 @@
 namespace Library;
 
-public interface Chara
+public interface Chara //crea la interfaz Chara
 {
     string Name { get; }
     int Health { get; }

@@ -39,7 +39,7 @@ public class Wizard : Chara //se crea la clase Wizard que implementa la interfaz
             Console.WriteLine("Ese item no existe"); //si el item no existe, se imprime un mensaje
         }
     }
-    public void RemoveItem(IItem item)
+    public void RemoveItem(IItem item) //metodo para remover item
     {
         if (item != null)
         {
@@ -105,7 +105,7 @@ public class Wizard : Chara //se crea la clase Wizard que implementa la interfaz
         }
     }
 
-    public void ReceiveDamage(int damage)
+    public void ReceiveDamage(int damage) //metodo para recibir daño
     {
         int totalDefenseValue = 0;
 
@@ -128,7 +128,7 @@ public class Wizard : Chara //se crea la clase Wizard que implementa la interfaz
 
         Console.WriteLine($"{this.Name} recibe {reducedDamage} de daño después de aplicar defensa. Vida restante: {this.Health}");
     }
-    public void ReceiveMagicDamage(int damage)
+    public void ReceiveMagicDamage(int damage) //metodo para recibir daño de hechizo
     {
         this.Health -= damage;
         if (this.Health < 0) this.Health = 0;

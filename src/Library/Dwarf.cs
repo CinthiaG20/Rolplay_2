@@ -3,14 +3,14 @@ using System.Collections;
 
 namespace Library;
 
-public class Dwarf : Chara
+public class Dwarf : Chara //crea la clase Dwarf que implementa la interfaz Chara
 {
     private string name;
     private int health;
     private int maxhealth;
     private ArrayList items = new ArrayList();
 
-    public Dwarf(string name, int maxhealth)
+    public Dwarf(string name, int maxhealth) //constructor de la clase
     {
         this.Name = name;
         this.maxhealth = maxhealth;
@@ -29,7 +29,7 @@ public class Dwarf : Chara
         set { health = value; }
     }
 
-    public void AddItem(IItem item)
+    public void AddItem(IItem item) //metodo para añadir item
     {
         if (item != null)
         {
@@ -44,7 +44,7 @@ public class Dwarf : Chara
         }
     }
 
-    public void RemoveItem(IItem item)
+    public void RemoveItem(IItem item) //metodo para remover item
     {
         if (item != null)
         {
@@ -57,7 +57,7 @@ public class Dwarf : Chara
         }
     }
 
-    public IItem GetItemByName(string nombre)
+    public IItem GetItemByName(string nombre) //metodo para buscar item por nombre
     {
         foreach (IItem item in this.items)
         {
@@ -70,7 +70,7 @@ public class Dwarf : Chara
         return null;
     }
 
-    public int TotalDamage()
+    public int TotalDamage() //metodo para calcular el daño total
     {
         int totalatk = 0;
         foreach (IItem item in this.items)
@@ -80,7 +80,7 @@ public class Dwarf : Chara
         return totalatk;
     }
 
-    public int TotalDefense()
+    public int TotalDefense() //metodo para calcular la defensa total
     {
         int totaldef = 0;
         foreach (IItem item in this.items)
@@ -111,7 +111,7 @@ public class Dwarf : Chara
         }
     }
 
-    public void ReceiveDamage(int damage)
+    public void ReceiveDamage(int damage) //metodo para recibir daño
     {
         int totalDefenseValue = 0;
 
@@ -134,7 +134,7 @@ public class Dwarf : Chara
 
         Console.WriteLine($"{this.Name} recibe {reducedDamage} de daño después de aplicar defensa. Vida restante: {this.Health}");
     }
-    public void ReceiveMagicDamage(int damage)
+    public void ReceiveMagicDamage(int damage) //metodo para recibir daño de hechizo
     {
         this.Health -= damage;
         if (this.Health < 0) this.Health = 0;
@@ -155,13 +155,13 @@ public class Dwarf : Chara
             Console.WriteLine($"{item.Name} no puede ser usado para defender."); //si el item no es de tipo defensa, se imprime un mensaje
         }
     }
-    public void Heal()
+    public void Heal() //metodo para curar
     {
         this.health = this.maxhealth;
         Console.WriteLine($"{this.name} ha sido curado. Vida restaurada a: {this.health}");
     }
 
-    public string GetInfo()
+    public string GetInfo() //metodo para obtener informacion del personaje
     {
         string info = $"Nombre: {this.name}, Vida: {this.health}\nItems:\n";
         foreach (IItem item in this.items)
