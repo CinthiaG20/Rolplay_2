@@ -33,7 +33,7 @@ public class Dwarf : Chara
     {
         if (item != null)
         {
-            if (item.Type != ItemType.Magic)
+            if (item.Type != ItemType.Magic && item.Type != ItemType.MagicAttack && item.Type != ItemType.magicDefense) //verifica si el item es de tipo ataque o defensa
             {
                 this.items.Add(item);
             }

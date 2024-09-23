@@ -1,6 +1,6 @@
 ﻿namespace Library;
 
-public class Item : IItem
+public class Item : IItem // Cambiar a public
 {
     public string Name { get; set; }
     public int AttackValue { get; set; }

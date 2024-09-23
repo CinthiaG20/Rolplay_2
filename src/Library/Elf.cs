@@ -27,11 +27,11 @@ public class Elf : Chara
         set { health = value;}
     }
     
-    public void AddItem(IItem item)
+    public void AddItem(IItem item) //metodo añadir item
     {
         if (item != null)
         {
-            if (item.Type != ItemType.Magic)
+            if (item.Type != ItemType.Magic && item.Type != ItemType.MagicAttack && item.Type != ItemType.magicDefense) //verifica si el item es de tipo ataque o defensa
             {
                 this.items.Add(item);
             }
@@ -42,7 +42,7 @@ public class Elf : Chara
         }
     }
 
-    public void RemoveItem(IItem item)
+    public void RemoveItem(IItem item) //metodo para remover item
     {
         if (item != null)
         {
@@ -108,13 +108,13 @@ public class Elf : Chara
         }
     }
     
-    public void ReceiveMagicDamage(int damage)
+    public void ReceiveMagicDamage(int damage) //metodo para recibir daño de hechizo
     {
         this.Health -= damage;
         if (this.Health < 0) this.Health = 0;
         Console.WriteLine($"{this.name} recibe {damage} de daño. Vida restante: {this.Health}");
     }
-    public void ReceiveDamage(int damage)
+    public void ReceiveDamage(int damage) //metodo para recibir daño
     {
         int totalDefenseValue = 0;
 
@@ -143,7 +143,7 @@ public class Elf : Chara
         Console.WriteLine($"{this.name} ha sido curado. Vida restaurada a: {this.health}"); //se imprime un mensaje
     }
     
-    public string GetInfo()
+    public string GetInfo() //metodo para obtener información del personaje
     {
         string info = $"Nombre: {this.name}, Vida: {this.health}\nItems:\n";
         foreach (IItem item in this.items)
