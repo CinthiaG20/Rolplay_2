@@ -29,7 +29,7 @@ CorazonHelado.AddSpell(Nevada); //se añade el hechizo Tormenta de Nieve al Spel
 CorazonHelado.AddSpell(picosH); //se añade el hechizo Picos Helados al SpellTome Corazón Helado
 
 Wizard mago1 = new Wizard("Sauron", 100, CorazonHelado); //se crea un mago con nombre Sauron, vida 100 y se le asigna el SpellTome Corazón Helado
-Item bastonGigante = new Item("Bastón de Hielo", 10, 3,ItemType.Magic);//se crea un item con nombre Bastón de Hielo, ataque 10 y defensa 3
+Item bastonGigante = new Item("Bastón de Hielo", 10, 3,ItemType.MagicAttack);//se crea un item con nombre Bastón de Hielo, ataque 10 y defensa 3
 Item capain = new Item("Capa de Sigilo", 0, 10,ItemType.Defense);//se crea un item con nombre Capa de Sigilo, ataque 0 y defensa 10
 
 mago1.AddItem(bastonGigante); //se añade el item Bastón de Hielo a Sauron
@@ -37,14 +37,14 @@ mago1.AddItem(capain); //se añade el item Capa de Sigilo a Sauron
 
 Elf elfo = new Elf("Legolas", 100); //se crea un elfo con nombre Legolas y vida 100
 Item arco = new Item("Arco de yggdrasil", 12,0,ItemType.Attack); //se crea un item con nombre Arco de yggdrasil, ataque 12 y defensa 0
-Item tunicaElfica = new Item("Túnica Élfica", 0, 8,ItemType.Defense); //se crea un item con nombre Túnica Élfica, ataque 0 y defensa 8
+Item tunicaElfica = new Item("Túnica Élfica", 2, 8,ItemType.Defense); //se crea un item con nombre Túnica Élfica, ataque 0 y defensa 8
 
 elfo.AddItem(arco); //se añade el item Arco de yggdrasil a Legolas
 elfo.AddItem(tunicaElfica); //se añade el item Túnica Élfica a Legolas
 
-mago.Attack(enano); //gandalf ataca al Gimli
+mago.Attack(enano,baston); //gandalf ataca al Gimli
 mago.UseSpell(bolaDeFuego, enano); //gandalf usa el hechizo Bola de Fuego contra Gimli
 mago1.UseSpell(Nevada, mago); //Sauron usa el hechizo Tormenta de Nieve contra Gandalf
-enano.Attack(elfo); //Gimli ataca a Legolas
-elfo.Attack(mago1); //Legolas ataca a Sauron
+enano.Attack(elfo,martilloDeGuerra); //Gimli ataca a Legolas
+elfo.Attack(mago1,arco); //Legolas ataca a Sauron
 enano.Heal();

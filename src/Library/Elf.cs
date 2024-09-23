@@ -89,12 +89,25 @@ public class Elf : Chara
         }                          
         return totaldef;        //devuelve la defensa total
     }
-    public void Attack(Chara target) //metodo para atacar
+    public void Attack(Chara target, IItem item) //metodo para atacar con un item
     {
-        int damage = this.TotalDamage(); //se calcula el daño total
-        Console.WriteLine($"{this.Name} ataca a {target.Name} y causa {damage} de daño."); //se imprime un mensaje
-        target.ReceiveDamage(damage);   //se llama al metodo ReceiveDamage de la clase Chara
-       
+        if (this.items.Contains(item)) //verifica si el item está asignado al personaje
+        {
+            if (item.Type == ItemType.Attack ||  item.Type == ItemType.attackDefense) //verifica si el item es de tipo ataque, ataque mágico o ataque-defensa
+            {
+                int damage = item.AttackValue; //se usa el valor de ataque del item
+                Console.WriteLine($"{this.Name} ataca a {target.Name} con {item.Name} y causa {damage} de daño."); //se imprime un mensaje
+                target.ReceiveDamage(damage); //se llama al metodo ReceiveDamage de la clase Chara
+            }
+            else
+            {
+                Console.WriteLine($"{item.Name} no puede ser usado para atacar."); //si el item no es de tipo ataque, se imprime un mensaje
+            }
+        }
+        else
+        {
+            Console.WriteLine($"{this.Name} no tiene asignado el item {item.Name}."); //si el item no está asignado, se imprime un mensaje
+        }
     }
 
     public void ReceiveDamage(int damage) //metodo para recibir daño

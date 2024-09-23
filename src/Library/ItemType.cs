@@ -3,5 +3,8 @@ public enum ItemType
 {
     Attack,
     Defense,
-    Magic
+    Magic,
+    MagicAttack,
+    magicDefense,
+    attackDefense
 }
