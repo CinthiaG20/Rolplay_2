@@ -7,11 +7,28 @@ public class Item : IItem
     public int DefenseValue { get; set; }
     public ItemType Type { get; set; }
 
-    public Item(string name, int attackValue, int defenseValue, ItemType type)
+    public Item(string name,int valor, ItemType type)
     {
         this.Name = name;
-        this.AttackValue = attackValue;
-        this.DefenseValue = defenseValue;
         this.Type = type;
+        if (type == ItemType.Attack)
+        {
+            AttackValue = valor;
+            DefenseValue = 0;
+        }
+
+        if (type == ItemType.Defense)
+        {
+            AttackValue = 0;
+            DefenseValue = valor;
+        }
+
+        if (type == ItemType.Magic)
+        {
+            AttackValue = valor;
+            DefenseValue = valor;
+        }
+        
+        
     }
 }

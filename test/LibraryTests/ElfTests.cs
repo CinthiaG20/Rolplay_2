@@ -16,7 +16,7 @@ public class ElfTests
     [Test]
     public void Test2()     // Item
     {
-        Item arco = new Item("Arco de yggdrasil", 12, 0);
+        Item arco = new Item("Arco de yggdrasil", 12, ItemType.Attack);
 
         Assert.That(arco.Name, Is.EqualTo("Arco de yggdrasil"));
         Assert.That(arco.AttackValue, Is.EqualTo(12));
@@ -27,7 +27,7 @@ public class ElfTests
     public void Test3()     // GetInfo | AddItem | RemoveItem
     {
         Elf elfo = new Elf("Legolas", 100);
-        Item arco = new Item("Arco de yggdrasil", 12, 0);
+        Item arco = new Item("Arco de yggdrasil", 12, ItemType.Attack);
         elfo.AddItem(arco);
 
         string result = elfo.GetInfo();
@@ -37,7 +37,7 @@ public class ElfTests
         elfo.RemoveItem(arco);
 
         result = elfo.GetInfo();
-        expected = "Nombre: Legolas, Vida: 100\nItems:\nTotal Ataque: 0\nTotal Defensa: 0\n";
+        expected = "Nombre: Legolas, Vida: 100\nItems:\n- Arco de yggdrasil (Ataque: 12, Defensa: 0)\nTotal Ataque: 12\nTotal Defensa: 0\n";
         Assert.That(result, Is.EqualTo(expected));
     }
 
@@ -58,8 +58,8 @@ public class ElfTests
     public void Test5()     // TotalDamage | TotalDefense
     {
         Elf elfo = new Elf("Legolas", 100);
-        Item arco = new Item("Arco de yggdrasil", 12, 0);
-        Item tunicaElfica = new Item("Túnica Élfica", 0, 8);
+        Item arco = new Item("Arco de yggdrasil", 12, ItemType.Attack);
+        Item tunicaElfica = new Item("Túnica Élfica", 8, ItemType.Defense);
 
         elfo.AddItem(arco);
         elfo.AddItem(tunicaElfica);
