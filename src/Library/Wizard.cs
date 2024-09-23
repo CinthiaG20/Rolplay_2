@@ -39,15 +39,16 @@ public class Wizard : Chara //se crea la clase Wizard que implementa la interfaz
             Console.WriteLine("Ese item no existe"); //si el item no existe, se imprime un mensaje
         }
     }
-    public void RemoveItem(IItem item) //metodo quitar item
+    public void RemoveItem(IItem item)
     {
-        if (item != null) //si el item existe
+        if (item != null)
         {
-            this.items.Remove(item); //se remueve el item
+            this.items.Remove(item);
+            Console.WriteLine($"{item.Name} ha sido removido de {this.Name}.");
         }
         else
         {
-            Console.WriteLine("Ese item no existe");   //si el item no existe, se imprime un mensaje
+            Console.WriteLine("Ese item no existe.");
         }
     }
     public int TotalDamage() //metodo para calcular el daño total
@@ -104,11 +105,22 @@ public class Wizard : Chara //se crea la clase Wizard que implementa la interfaz
         }
     }
 
-    public void ReceiveDamage(int damage) //metodo para recibir daño
+    public void ReceiveDamage(int damage, IItem defenseItem = null)
     {
-        this.Health -= damage; //se resta el daño a la vida
-        if (this.Health < 0) this.Health = 0; //si la vida es menor a 0, se asigna 0
-        Console.WriteLine($"{this.name} recibe {damage} de daño. Vida restante: {this.Health}"); //se imprime un mensaje
+        if (defenseItem != null && (defenseItem.Type == ItemType.Defense || defenseItem.Type == ItemType.attackDefense))
+        {
+            int reducedDamage = damage - defenseItem.DefenseValue; // Reduce damage by defense value
+            if (reducedDamage < 0) reducedDamage = 0; // Ensure damage is not negative
+            this.Health -= reducedDamage; // Apply reduced damage to health
+            if (this.Health < 0) this.Health = 0; // Ensure health is not negative
+            Console.WriteLine($"{this.Name} se defiende con {defenseItem.Name} y recibe {reducedDamage} de daño. Vida restante: {this.Health}");
+        }
+        else
+        {
+            this.Health -= damage; // Apply full damage to health
+            if (this.Health < 0) this.Health = 0; // Ensure health is not negative
+            Console.WriteLine($"{this.Name} recibe {damage} de daño. Vida restante: {this.Health}");
+        }
     }
 
     public void Heal() //metodo para curar

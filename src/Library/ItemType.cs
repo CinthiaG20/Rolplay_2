@@ -6,5 +6,5 @@ public enum ItemType
     Magic,
     MagicAttack,
     magicDefense,
-    attackDefense
+    attackDefense,
 }

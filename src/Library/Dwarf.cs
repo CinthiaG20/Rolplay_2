@@ -48,14 +48,12 @@ public class Dwarf : Chara
     {
         if (item != null)
         {
-            if (item.Type == ItemType.Magic)
-            {
-                this.items.Remove(item);
-            }
+            this.items.Remove(item);
+            Console.WriteLine($"{item.Name} ha sido removido de {this.Name}.");
         }
         else
         {
-            Console.WriteLine("Ese item no existe");
+            Console.WriteLine("Ese item no existe.");
         }
     }
 
@@ -113,13 +111,23 @@ public class Dwarf : Chara
         }
     }
 
-    public void ReceiveDamage(int damage)
+    public void ReceiveDamage(int damage, IItem defenseItem = null)
     {
-        this.Health -= damage;
-        if (this.Health < 0) this.Health = 0;
-        Console.WriteLine($"{this.name} recibe {damage} de daño. Vida restante: {this.Health}");
+        if (defenseItem != null && (defenseItem.Type == ItemType.Defense || defenseItem.Type == ItemType.attackDefense))
+        {
+            int reducedDamage = damage - defenseItem.DefenseValue; // Reduce damage by defense value
+            if (reducedDamage < 0) reducedDamage = 0; // Ensure damage is not negative
+            this.Health -= reducedDamage; // Apply reduced damage to health
+            if (this.Health < 0) this.Health = 0; // Ensure health is not negative
+            Console.WriteLine($"{this.Name} se defiende con {defenseItem.Name} y recibe {reducedDamage} de daño. Vida restante: {this.Health}");
+        }
+        else
+        {
+            this.Health -= damage; // Apply full damage to health
+            if (this.Health < 0) this.Health = 0; // Ensure health is not negative
+            Console.WriteLine($"{this.Name} recibe {damage} de daño. Vida restante: {this.Health}");
+        }
     }
-
     public void Heal()
     {
         this.health = this.maxhealth;

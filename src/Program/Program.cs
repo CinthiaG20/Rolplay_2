@@ -15,7 +15,7 @@ SangreDracarica.AddSpell(bolaDeFuego); //se añade el hechizo Bola de Fuego al S
 SangreDracarica.AddSpell(llamarada); //se añade el hechizo Llamarada al SpellTome Sangre Dracárica
 
 Wizard mago = new Wizard("Gandalf", 100, SangreDracarica); //se crea un mago con nombre Gandalf, vida 100 y se le asigna el SpellTome Sangre Dracárica
-Item baston = new Item("Bastón Mágico", 10, 0,ItemType.Magic); //se crea un item con nombre Bastón Mágico, ataque 10 y defensa 3
+Item baston = new Item("Bastón Mágico", 10, 0,ItemType.MagicAttack); //se crea un item con nombre Bastón Mágico, ataque 10 y defensa 3
 Item capa = new Item("Capa Mágica", 0, 10,ItemType.Defense); //se crea un item con nombre Capa Mágica, ataque 0 y defensa 10
 
 mago.AddItem(baston); //se añade el item Bastón Mágico a gandalf
@@ -36,12 +36,11 @@ mago1.AddItem(bastonGigante); //se añade el item Bastón de Hielo a Sauron
 mago1.AddItem(capain); //se añade el item Capa de Sigilo a Sauron
 
 Elf elfo = new Elf("Legolas", 100); //se crea un elfo con nombre Legolas y vida 100
-Item arco = new Item("Arco de yggdrasil", 12,0,ItemType.Attack); //se crea un item con nombre Arco de yggdrasil, ataque 12 y defensa 0
-Item tunicaElfica = new Item("Túnica Élfica", 2, 8,ItemType.Defense); //se crea un item con nombre Túnica Élfica, ataque 0 y defensa 8
+Item arco = new Item("Arco de yggdrasil", 10,1,ItemType.Attack); //se crea un item con nombre Arco de yggdrasil, ataque 12 y defensa 0
+Item tunicaElfica = new Item("Túnica Élfica", 1, 8,ItemType.Defense); //se crea un item con nombre Túnica Élfica, ataque 0 y defensa 8
 
 elfo.AddItem(arco); //se añade el item Arco de yggdrasil a Legolas
 elfo.AddItem(tunicaElfica); //se añade el item Túnica Élfica a Legolas
-
 mago.Attack(enano,baston); //gandalf ataca al Gimli
 mago.UseSpell(bolaDeFuego, enano); //gandalf usa el hechizo Bola de Fuego contra Gimli
 mago1.UseSpell(Nevada, mago); //Sauron usa el hechizo Tormenta de Nieve contra Gandalf
