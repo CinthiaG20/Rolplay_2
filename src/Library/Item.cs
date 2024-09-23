@@ -9,6 +9,7 @@ public class Item : IItem
 
     public Item(string name, int attackValue, int defenseValue, ItemType type)
     {
+      
         this.Name = name;
         this.AttackValue = attackValue;
         this.DefenseValue = defenseValue;

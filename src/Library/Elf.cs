@@ -107,23 +107,35 @@ public class Elf : Chara
             Console.WriteLine($"{this.Name} no tiene asignado el item {item.Name}."); //si el item no está asignado, se imprime un mensaje
         }
     }
-
-    public void ReceiveDamage(int damage, IItem defenseItem = null)
+    
+    public void ReceiveMagicDamage(int damage)
     {
-        if (defenseItem != null && (defenseItem.Type == ItemType.Defense || defenseItem.Type == ItemType.attackDefense))
+        this.Health -= damage;
+        if (this.Health < 0) this.Health = 0;
+        Console.WriteLine($"{this.name} recibe {damage} de daño. Vida restante: {this.Health}");
+    }
+    public void ReceiveDamage(int damage)
+    {
+        int totalDefenseValue = 0;
+
+        // calcula el total de defensa
+        foreach (IItem item in this.items)
         {
-            int reducedDamage = damage - defenseItem.DefenseValue; // Reduce damage by defense value
-            if (reducedDamage < 0) reducedDamage = 0; // Ensure damage is not negative
-            this.Health -= reducedDamage; // Apply reduced damage to health
-            if (this.Health < 0) this.Health = 0; // Ensure health is not negative
-            Console.WriteLine($"{this.Name} se defiende con {defenseItem.Name} y recibe {reducedDamage} de daño. Vida restante: {this.Health}");
+            if (item.Type == ItemType.Defense || item.Type == ItemType.attackDefense || item.Type == ItemType.magicDefense)
+            {
+                totalDefenseValue += item.DefenseValue;
+            }
         }
-        else
-        {
-            this.Health -= damage; // Apply full damage to health
-            if (this.Health < 0) this.Health = 0; // Ensure health is not negative
-            Console.WriteLine($"{this.Name} recibe {damage} de daño. Vida restante: {this.Health}");
-        }
+
+        // Reduce el daño por el valor total de defensa
+        int reducedDamage = damage - totalDefenseValue;
+        if (reducedDamage < 0) reducedDamage = 0; // no permitir que el daño reducido sea negativo
+
+        // aplicar el daño reducido a la vida
+        this.Health -= reducedDamage;
+        if (this.Health < 0) this.Health = 0; // no permitir que la vida sea negativa
+
+        Console.WriteLine($"{this.Name} recibe {reducedDamage} de daño después de aplicar defensa. Vida restante: {this.Health}");
     }
     public void Heal() //metodo para curar
     {

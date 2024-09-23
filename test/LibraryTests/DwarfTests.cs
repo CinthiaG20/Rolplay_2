@@ -1,70 +1,115 @@
 ﻿using Library;
+using NUnit.Framework;
 
-namespace LibraryTests;
-
-public class DwarfTests
+namespace LibraryTests
 {
-    [Test]
-    public void Test1()     // Dwarf
+    [TestFixture]
+    public class DwarfTests
     {
-        Dwarf enano = new Dwarf("Gimli", 100);
+        private Dwarf dwarf;
+        private IItem defenseItem;
+        private IItem attackItem;
+        private IItem attackDefenseItem;
+        private Dwarf target;
 
-        Assert.That(enano.Name, Is.EqualTo("Gimli"));
-        Assert.That(enano.Health, Is.EqualTo(100));
-    }
+        [SetUp]
+        public void Setup()
+        {
+            dwarf = new Dwarf("Gimli", 100);
+            defenseItem = new Item("Shield", 0, 20, ItemType.Defense);
+            attackItem = new Item("Sword", 30, 0, ItemType.Attack);
+            attackDefenseItem = new Item("Battle Axe", 15, 10, ItemType.attackDefense);
+            target = new Dwarf("Thorin", 100);
+        }
 
-    [Test]
-    public void Test2()     // Item
-    {
-        Item martilloDeGuerra = new Item("Martillo de Guerra", 15, 5);
+        [Test]
+        public void Test1() // Dwarf
+        {
+            Assert.That(dwarf.Name, Is.EqualTo("Gimli"));
+            Assert.That(dwarf.Health, Is.EqualTo(100));
+        }
 
-        Assert.That(martilloDeGuerra.Name, Is.EqualTo("Martillo de Guerra"));
-        Assert.That(martilloDeGuerra.AttackValue, Is.EqualTo(15));
-        Assert.That(martilloDeGuerra.DefenseValue, Is.EqualTo(5));
-    }
+        [Test]
+        public void Test2() // Item
+        {
+            Item axe = new Item("Axe", 10, 3, ItemType.Attack);
+            Assert.That(axe.Name, Is.EqualTo("Axe"));
+            Assert.That(axe.AttackValue, Is.EqualTo(10));
+            Assert.That(axe.DefenseValue, Is.EqualTo(0));
+        }
 
-    [Test]
-    public void Test3()     // GetInfo | AddItem | RemoveItem
-    {
-        Dwarf enano = new Dwarf("Gimli", 100);
-        Item martilloDeGuerra = new Item("Martillo de Guerra", 15, 5);
-        enano.AddItem(martilloDeGuerra);
+        [Test]
+        public void Test3() // GetInfo | AddItem | RemoveItem
+        {
+            Item axe = new Item("Axe", 10, 3, ItemType.Attack);
+            dwarf.AddItem(axe);
 
-        string result = enano.GetInfo();
-        string expected = "Nombre: Gimli, Vida: 100\nItems:\n- Martillo de Guerra (Ataque: 15, Defensa: 5)\nTotal Ataque: 15\nTotal Defensa: 5\n";
-        Assert.That(result, Is.EqualTo(expected));
+            string result = dwarf.GetInfo();
+            string expected = "Nombre: Gimli, Vida: 100\nItems:\n- Axe (Ataque: 10, Defensa: 0)\nTotal Ataque: 10\nTotal Defensa: 0\n";
+            Assert.That(result, Is.EqualTo(expected));
 
-        enano.RemoveItem(martilloDeGuerra);
+            dwarf.RemoveItem(axe);
 
-        result = enano.GetInfo();
-        expected = "Nombre: Gimli, Vida: 100\nItems:\nTotal Ataque: 0\nTotal Defensa: 0\n";
-        Assert.That(result, Is.EqualTo(expected));
-    }
+            result = dwarf.GetInfo();
+            expected = "Nombre: Gimli, Vida: 100\nItems:\nTotal Ataque: 0\nTotal Defensa: 0\n";
+            Assert.That(result, Is.EqualTo(expected));
+        }
 
-    [Test]
-    public void Test4()     // Heal
-    {
-        Dwarf enano = new Dwarf("Gimli", 100);
-        enano.Health = 55;
+        [Test]
+        public void Test4() // Heal
+        {
+            dwarf.Health = 55;
+            Assert.That(dwarf.Health, Is.EqualTo(55));
 
-        Assert.That(enano.Health, Is.EqualTo(55));
+            dwarf.Heal();
+            Assert.That(dwarf.Health, Is.EqualTo(100));
+        }
 
-        enano.Heal();
+        [Test]
+        public void Test5() // TotalDamage | TotalDefense
+        {
+            Item axe = new Item("Axe", 10, 3, ItemType.Attack);
+            Item amulet = new Item("Amulet", 5, 5, ItemType.attackDefense);
+            Item cloak = new Item("Cloak", 0, 10, ItemType.Defense);
 
-        Assert.That(enano.Health, Is.EqualTo(100));
-    }
+            dwarf.AddItem(axe);
+            dwarf.AddItem(amulet);
+            dwarf.AddItem(cloak);
 
-    [Test]
-    public void Test5()     // TotalDamage | TotalDefense
-    {
-        Dwarf enano = new Dwarf("Gimli", 100);
-        Item martilloDeGuerra = new Item("Martillo de Guerra", 15, 5);
-        Item armaduraValiriana = new Item("Armadura Valiriana", 0, 20);
+            Assert.That(dwarf.TotalDamage(), Is.EqualTo(15));
+            Assert.That(dwarf.TotalDefense(), Is.EqualTo(18));
+        }
 
-        enano.AddItem(martilloDeGuerra);
-        enano.AddItem(armaduraValiriana);
+        [Test]
+        public void Test6() // ReceiveDamage
+        {
+            dwarf.AddItem(defenseItem);
+            dwarf.ReceiveDamage(50);
+            Assert.That(dwarf.Health, Is.EqualTo(70));
+        }
 
-        Assert.That(enano.TotalDamage(), Is.EqualTo(15));
-        Assert.That(enano.TotalDefense(), Is.EqualTo(25));
+        [Test]
+        public void Test7() // ReceiveDamage_ShouldNotReduceHealthBelowZero
+        {
+            dwarf.AddItem(defenseItem);
+            dwarf.ReceiveDamage(150);
+            Assert.That(dwarf.Health, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void Test8() // Attack
+        {
+            dwarf.AddItem(attackItem);
+            dwarf.Attack(target, attackItem);
+            Assert.That(target.Health, Is.EqualTo(70));
+        }
+
+        [Test]
+        public void Test9() // attack con un item de defensa
+        {
+            dwarf.AddItem(defenseItem);
+            dwarf.Attack(target, defenseItem);
+            Assert.That(target.Health, Is.EqualTo(100));
+        }
     }
 }

@@ -111,21 +111,48 @@ public class Dwarf : Chara
         }
     }
 
-    public void ReceiveDamage(int damage, IItem defenseItem = null)
+    public void ReceiveDamage(int damage)
     {
-        if (defenseItem != null && (defenseItem.Type == ItemType.Defense || defenseItem.Type == ItemType.attackDefense))
+        int totalDefenseValue = 0;
+
+        // calcula el total de defensa
+        foreach (IItem item in this.items)
         {
-            int reducedDamage = damage - defenseItem.DefenseValue; // Reduce damage by defense value
-            if (reducedDamage < 0) reducedDamage = 0; // Ensure damage is not negative
-            this.Health -= reducedDamage; // Apply reduced damage to health
-            if (this.Health < 0) this.Health = 0; // Ensure health is not negative
-            Console.WriteLine($"{this.Name} se defiende con {defenseItem.Name} y recibe {reducedDamage} de daño. Vida restante: {this.Health}");
+            if (item.Type == ItemType.Defense || item.Type == ItemType.attackDefense || item.Type == ItemType.magicDefense)
+            {
+                totalDefenseValue += item.DefenseValue;
+            }
+        }
+
+        // Reduce el daño por el valor total de defensa
+        int reducedDamage = damage - totalDefenseValue;
+        if (reducedDamage < 0) reducedDamage = 0; // no permitir que el daño reducido sea negativo
+
+        // aplicar el daño reducido a la vida
+        this.Health -= reducedDamage;
+        if (this.Health < 0) this.Health = 0; // no permitir que la vida sea negativa
+
+        Console.WriteLine($"{this.Name} recibe {reducedDamage} de daño después de aplicar defensa. Vida restante: {this.Health}");
+    }
+    public void ReceiveMagicDamage(int damage)
+    {
+        this.Health -= damage;
+        if (this.Health < 0) this.Health = 0;
+        Console.WriteLine($"{this.name} recibe {damage} de daño. Vida restante: {this.Health}");
+    }
+    public void Defense(int damage, IItem item) //metodo para defenderse con un item
+    {
+        if (item.Type == ItemType.Defense || item.Type== ItemType.attackDefense) //verifica si el item es de tipo defensa o defensa mágica
+        {
+            int reducedDamage = damage - item.DefenseValue; //se reduce el daño por el valor de defensa del item
+            if (reducedDamage < 0) reducedDamage = 0; //si el daño reducido es menor a 0, se asigna 0
+            this.Health -= reducedDamage; //se resta el daño reducido a la vida
+            if (this.Health < 0) this.Health = 0; //si la vida es menor a 0, se asigna 0
+            Console.WriteLine($"{this.name} se defiende con {item.Name} y recibe {reducedDamage} de daño. Vida restante: {this.Health}"); //se imprime un mensaje
         }
         else
         {
-            this.Health -= damage; // Apply full damage to health
-            if (this.Health < 0) this.Health = 0; // Ensure health is not negative
-            Console.WriteLine($"{this.Name} recibe {damage} de daño. Vida restante: {this.Health}");
+            Console.WriteLine($"{item.Name} no puede ser usado para defender."); //si el item no es de tipo defensa, se imprime un mensaje
         }
     }
     public void Heal()

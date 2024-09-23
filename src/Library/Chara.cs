@@ -7,6 +7,7 @@ public interface Chara
     void Heal();
     void AddItem(IItem item);
     int TotalDefense();
-    void ReceiveDamage(int damage,IItem defenseItem = null);
+    void ReceiveDamage(int damage);
+    void ReceiveMagicDamage(int damage);
 }
 
