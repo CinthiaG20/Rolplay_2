@@ -1,7 +1,10 @@
-﻿namespace Library;
+namespace Library;
 public enum ItemType
 {
     Attack,
     Defense,
-    Magic
+    Magic,
+    MagicAttack,
+    magicDefense,
+    attackDefense,
 }
